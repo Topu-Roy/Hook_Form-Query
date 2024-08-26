@@ -4,10 +4,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuth } from "../hooks/useAuth";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  useLocalStorage_userList,
-  useLocalStorage_userSession,
-} from "../hooks/useLocalStorage";
 
 const schema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
@@ -28,9 +24,7 @@ export type CurrentUserType = Omit<UserType, "password">;
 
 export default function SignIn() {
   const navigator = useNavigate();
-  const { isAuthenticated } = useAuth();
-  const { allUsersArray } = useLocalStorage_userList();
-  const { updateCurrentSession } = useLocalStorage_userSession();
+  const { isAuthenticated, handleAuthenticate } = useAuth();
 
   const {
     register,
@@ -41,26 +35,7 @@ export default function SignIn() {
   });
 
   const onSubmit = (data: FormData) => {
-    if (!allUsersArray) {
-      return alert("No user exist yet. Register first.");
-    }
-
-    if (Array.isArray(allUsersArray)) {
-      const userData = allUsersArray.find((user) => user.email === data.email);
-
-      if (!userData) {
-        return alert("Email is not correct");
-      }
-
-      if (data.password !== userData.password) {
-        return alert("Password is not correct");
-      }
-
-      updateCurrentSession({
-        email: userData.email,
-        name: userData.name,
-      });
-    }
+    handleAuthenticate(data);
   };
 
   useEffect(() => {

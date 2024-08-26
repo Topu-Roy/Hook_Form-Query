@@ -2,7 +2,8 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
-import { useLocalStorage_userList } from "../hooks/useLocalStorage";
+import { useLocalStorage } from "../hooks/useLocalStorage";
+import { UserType } from "./sign-in";
 
 const schema = z.object({
   name: z
@@ -17,7 +18,8 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 
 export default function Register() {
-  const { updateUsersArray } = useLocalStorage_userList();
+  const { setItem: updateUsersArray, data: usersArray } =
+    useLocalStorage<UserType[]>("allUsersArray");
   const navigator = useNavigate();
 
   const {
@@ -35,7 +37,12 @@ export default function Register() {
       password: data.password,
     };
 
-    updateUsersArray(newUser);
+    if (Array.isArray(usersArray)) {
+      updateUsersArray([...usersArray, newUser]);
+    } else {
+      updateUsersArray([newUser]);
+    }
+
     navigator("/auth/sign-in");
   };
 

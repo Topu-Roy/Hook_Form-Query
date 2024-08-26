@@ -8,7 +8,5 @@ export function useAuth() {
     throw new Error("AuthContext must be used within an AuthProvider");
   }
 
-  const { isAuthenticated, user, logout } = authContext;
-
-  return { isAuthenticated, user, logout };
+  return { ...authContext };
 }

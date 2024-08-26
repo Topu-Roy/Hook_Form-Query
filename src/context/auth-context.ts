@@ -1,10 +1,11 @@
 import { createContext } from "react";
-import { UserType } from "../components/sign-in";
+import type { UserType, CurrentUserType } from "../components/sign-in";
 
 type AuthContextType = {
   isAuthenticated: boolean;
-  user: UserType | null;
+  user: CurrentUserType | null;
   logout: () => void;
+  handleAuthenticate: (data: Omit<UserType, "name"> | null) => void;
 };
 
 export const AuthContext = createContext<AuthContextType | undefined>(
