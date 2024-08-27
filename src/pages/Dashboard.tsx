@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router";
-import { useAuth } from "../hooks/useAuth";
 import { useEffect } from "react";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function Dashboard() {
   const navigator = useNavigate();

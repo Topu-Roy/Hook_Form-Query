@@ -1,7 +1,7 @@
 import { ReactNode, useCallback, useState } from "react";
-import type { CurrentUserType, UserType } from "../components/sign-in";
-import { AuthContext } from "./auth-context";
-import { useLocalStorage } from "../hooks/useLocalStorage";
+import { CurrentUserType, UserType } from "@/components/sign-in";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
+import { AuthContext } from "@/context/auth-context";
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
