@@ -4,6 +4,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
 import { UserType } from "./sign-in";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
+import { Button } from "./ui/button";
+import { InputField } from "./InputField";
 
 const schema = z.object({
   name: z
@@ -23,11 +25,16 @@ export default function Register() {
   const navigator = useNavigate();
 
   const {
-    register,
+    control,
     handleSubmit,
-    formState: { errors },
+    formState: { isSubmitting, isLoading },
   } = useForm<FormData>({
     resolver: zodResolver(schema),
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+    },
   });
 
   const onSubmit = (data: FormData) => {
@@ -47,28 +54,46 @@ export default function Register() {
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div>
-          <input type="text" placeholder="Name" {...register("name")} />
-          {errors.name && <span>{errors.name.message}</span>}
-        </div>
+    <div className="h-[28rem] p-4">
+      <h2 className="text-center text-xl font-semibold">Register</h2>
+      <form
+        className="flex h-full w-full flex-col items-center justify-center space-y-4"
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        <InputField
+          control={control}
+          id="Name_Field"
+          label="Name"
+          name="name"
+          placeholder="jhon doe"
+          type="Text"
+        />
+        <InputField
+          control={control}
+          id="Email_Field"
+          label="Email"
+          name="email"
+          placeholder="example@mail.com"
+          type="email"
+        />
+        <InputField
+          control={control}
+          id="Password_Field"
+          label="Password"
+          name="password"
+          type="password"
+        />
 
-        <div>
-          <input type="email" placeholder="Email" {...register("email")} />
-          {errors.email && <span>{errors.email.message}</span>}
+        <div className="flex w-full flex-1 items-end justify-end pb-4">
+          <Button
+            disabled={isSubmitting || isLoading}
+            variant={"outline"}
+            className="w-[50%] border border-black py-6 transition-colors hover:bg-blue-600"
+            type="submit"
+          >
+            Submit
+          </Button>
         </div>
-
-        <div>
-          <input
-            type="password"
-            placeholder="Password"
-            {...register("password")}
-          />
-          {errors.password && <span>{errors.password.message}</span>}
-        </div>
-
-        <button type="submit">Submit</button>
       </form>
     </div>
   );

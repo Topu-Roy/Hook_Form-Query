@@ -4,6 +4,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
+import { InputField } from "./InputField";
+import { Button } from "./ui/button";
 
 const schema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
@@ -27,9 +29,9 @@ export default function SignIn() {
   const { isAuthenticated, handleAuthenticate } = useAuth();
 
   const {
-    register,
+    control,
     handleSubmit,
-    formState: { errors },
+    formState: { isLoading, isSubmitting },
   } = useForm<FormData>({
     resolver: zodResolver(schema),
   });
@@ -45,23 +47,38 @@ export default function SignIn() {
   }, [isAuthenticated]);
 
   return (
-    <div>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div>
-          <input type="email" placeholder="Email" {...register("email")} />
-          {errors.email && <span>{errors.email.message}</span>}
-        </div>
+    <div className="h-[28rem] p-4">
+      <h2 className="text-center text-xl font-semibold">Sign in</h2>
+      <form
+        className="flex h-full w-full flex-col items-center justify-center space-y-4"
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        <InputField
+          control={control}
+          id="Email_Field"
+          label="Email"
+          name="email"
+          placeholder="example@mail.com"
+          type="email"
+        />
+        <InputField
+          control={control}
+          id="Password_Field"
+          label="Password"
+          name="password"
+          type="password"
+        />
 
-        <div>
-          <input
-            type="password"
-            placeholder="Password"
-            {...register("password")}
-          />
-          {errors.password && <span>{errors.password.message}</span>}
+        <div className="flex w-full flex-1 items-end justify-end pb-4">
+          <Button
+            disabled={isSubmitting || isLoading}
+            variant={"outline"}
+            className="w-[50%] border border-black py-6 transition-colors hover:bg-blue-600"
+            type="submit"
+          >
+            Submit
+          </Button>
         </div>
-
-        <button type="submit">Submit</button>
       </form>
     </div>
   );
