@@ -25,7 +25,7 @@ export type UserType = {
 export type CurrentUserType = Omit<UserType, "password">;
 
 export default function SignIn() {
-  const navigator = useNavigate();
+  const navigate = useNavigate();
   const { isAuthenticated, handleAuthenticate } = useAuth();
 
   const {
@@ -42,9 +42,9 @@ export default function SignIn() {
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigator("/dashboard", { replace: true });
+      navigate("/dashboard", { replace: true });
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, navigate]);
 
   return (
     <div className="h-[28rem] p-4">

@@ -1,21 +1,46 @@
-import { ReactNode, useCallback, useState } from "react";
+import { ReactNode, useCallback, useEffect, useState } from "react";
 import { CurrentUserType, UserType } from "@/components/sign-in";
-import { useLocalStorage } from "@/hooks/useLocalStorage";
+import { useNewLocalStorage } from "@/hooks/useLocalStorage";
 import { AuthContext } from "@/context/auth-context";
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState<CurrentUserType | null>(null);
-  const { setItem: updateCurrentSession, removeItem: removeCurrentSession } =
-    useLocalStorage<CurrentUserType>("currentUserSession");
-  const { data: allUsersArray } = useLocalStorage<UserType[]>("allUsersArray");
+  const {
+    getItem: getCurrentSession,
+    removeItem: removeCurrentSession,
+    setItem: updateCurrentSession,
+  } = useNewLocalStorage<CurrentUserType>("currentUserSession");
+  const { getItem: getAllUsersArray } =
+    useNewLocalStorage<UserType[]>("allUsersArray");
+  const [allUsersArray, setAllUsersArray] = useState<UserType[]>([]);
+  const [currentSession, setCurrentSession] = useState<CurrentUserType>();
 
-  function handleAuthenticate(data: Omit<UserType, "name"> | null) {
-    if (data) {
-      if (Array.isArray(allUsersArray)) {
+  useEffect(() => {
+    const users = getAllUsersArray();
+    const session = getCurrentSession();
+    if (users) setAllUsersArray(users);
+    if (session) setCurrentSession(session);
+  }, []);
+
+  useEffect(() => {
+    if (currentSession) {
+      setUser(currentSession);
+      setIsAuthenticated(true);
+    } else {
+      setUser(null);
+      setIsAuthenticated(false);
+    }
+  }, [currentSession]);
+
+  const handleAuthenticate = useCallback(
+    (data: Omit<UserType, "name"> | null) => {
+      if (data) {
         const userData = allUsersArray.find(
           (user) => user.email === data.email,
         );
+
+        console.log(userData);
 
         if (!userData) {
           return alert("Email is not correct");
@@ -29,26 +54,21 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           email: userData.email,
           name: userData.name,
         });
-
-        setUser({
+        setCurrentSession({
           email: userData.email,
           name: userData.name,
         });
-
-        setIsAuthenticated(true);
       } else {
         return alert("No user exist yet. Register first.");
       }
-    } else {
-      removeCurrentSession();
-      setUser(null);
-      setIsAuthenticated(false);
-    }
-  }
+    },
+    [allUsersArray, updateCurrentSession],
+  );
 
   const logout = useCallback(() => {
     removeCurrentSession();
-  }, []);
+    setCurrentSession(undefined);
+  }, [removeCurrentSession]);
 
   return (
     <AuthContext.Provider

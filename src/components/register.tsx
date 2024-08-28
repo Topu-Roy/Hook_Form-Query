@@ -3,9 +3,10 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
 import { UserType } from "./sign-in";
-import { useLocalStorage } from "@/hooks/useLocalStorage";
+import { useNewLocalStorage } from "@/hooks/useLocalStorage";
 import { Button } from "./ui/button";
 import { InputField } from "./InputField";
+import { useEffect, useState } from "react";
 
 const schema = z.object({
   name: z
@@ -20,9 +21,18 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 
 export default function Register() {
-  const { setItem: updateUsersArray, data: usersArray } =
-    useLocalStorage<UserType[]>("allUsersArray");
+  const [allUsersArray, setAllUsersArray] = useState<UserType[]>([]);
+  const { getItem: getUsersArray, setItem: updateUsersArray } =
+    useNewLocalStorage<UserType[]>("allUsersArray");
   const navigator = useNavigate();
+
+  useEffect(() => {
+    const users = getUsersArray();
+
+    if (users) {
+      setAllUsersArray(users);
+    }
+  }, [getUsersArray]);
 
   const {
     control,
@@ -44,14 +54,22 @@ export default function Register() {
       password: data.password,
     };
 
-    if (Array.isArray(usersArray)) {
-      updateUsersArray([...usersArray, newUser]);
+    const isExist = allUsersArray.find((user) => user.email === data.email);
+
+    if (isExist) {
+      alert("user already exist.");
     } else {
-      updateUsersArray([newUser]);
+      updateUsersArray([...allUsersArray, newUser]);
     }
 
     navigator("/auth/sign-in");
   };
+
+  useEffect(() => {
+    console.log(allUsersArray);
+
+    return () => console.log(allUsersArray);
+  }, [allUsersArray]);
 
   return (
     <div className="h-[28rem] p-4">
