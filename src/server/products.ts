@@ -1,4 +1,4 @@
-import { products, ProductType } from "@/assets/products";
+import { products, type ProductType } from "@/assets/products";
 
 let productList = [...products];
 

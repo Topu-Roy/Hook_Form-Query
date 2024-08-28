@@ -6,7 +6,7 @@ import { useNewLocalStorage } from "@/hooks/useLocalStorage";
 import { Button } from "../components/ui/button";
 import { InputField } from "../components/InputField";
 import { useEffect, useState } from "react";
-import { UserType } from "@/context/auth-context";
+import { type UserType } from "@/context/auth-context";
 import { useAuth } from "@/hooks/useAuth";
 
 const schema = z.object({

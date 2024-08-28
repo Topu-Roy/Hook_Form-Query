@@ -11,5 +11,3 @@ export default defineConfig({
     },
   },
 });
-
-("./src/index.css");

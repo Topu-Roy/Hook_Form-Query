@@ -1,8 +1,12 @@
-import { ReactNode, useCallback, useEffect, useState } from "react";
+import { type ReactElement, useCallback, useEffect, useState } from "react";
 import { useNewLocalStorage } from "@/hooks/useLocalStorage";
-import { AuthContext, CurrentUserType, UserType } from "@/context/auth-context";
+import {
+  AuthContext,
+  type CurrentUserType,
+  type UserType,
+} from "@/context/auth-context";
 
-export const AuthProvider = ({ children }: { children: ReactNode }) => {
+export const AuthProvider = ({ children }: { children: ReactElement }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState<CurrentUserType | null>(null);
   const {

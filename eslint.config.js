@@ -39,15 +39,7 @@ export default tseslint.config(
         },
       ],
       "@typescript-eslint/require-await": "off",
-      "@typescript-eslint/no-misused-promises": [
-        "error",
-        {
-          checksVoidReturn: {
-            attributes: false,
-          },
-        },
-      ],
       "react-hooks/exhaustive-deps": "off",
     },
-  }
+  },
 );

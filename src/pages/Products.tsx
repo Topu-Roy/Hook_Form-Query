@@ -1,4 +1,4 @@
-import { ProductType } from "@/assets/products";
+import { type ProductType } from "@/assets/products";
 import AddProductForm from "@/components/addProductForm";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";

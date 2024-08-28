@@ -11,7 +11,7 @@ type InputFieldProps<T extends FieldValues> = {
   label: string;
   name: Path<T>;
   type: string;
-  control: Control<T, any>;
+  control: Control<T, unknown>;
   placeholder?: string;
   id: string;
   valueAsNumber?: boolean;

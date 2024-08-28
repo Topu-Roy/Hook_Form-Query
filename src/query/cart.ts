@@ -1,6 +1,6 @@
 import {
   addNewCartProduct,
-  CartProductType,
+  type CartProductType,
   getAllCartProducts,
   removeProduct,
   updateQuantity,

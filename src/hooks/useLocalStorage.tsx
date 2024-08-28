@@ -14,9 +14,11 @@ export function useLocalStorage<T>(key: string) {
   const setItem = useCallback((value: T) => {
     if (Array.isArray(data)) {
       const alreadyExist = data.find((item) => item === value);
-      alreadyExist
-        ? (window.location.href = "/auth/sign-in")
-        : window.localStorage.setItem(key, JSON.stringify(value));
+      if (alreadyExist) {
+        window.location.href = "/auth/sign-in";
+      } else {
+        window.localStorage.setItem(key, JSON.stringify(value));
+      }
     } else {
       window.localStorage.setItem(key, JSON.stringify(value));
     }
