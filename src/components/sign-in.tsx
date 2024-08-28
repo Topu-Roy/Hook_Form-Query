@@ -16,14 +16,6 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>;
 
-export type UserType = {
-  name: string;
-  email: string;
-  password: string;
-};
-
-export type CurrentUserType = Omit<UserType, "password">;
-
 export default function SignIn() {
   const navigate = useNavigate();
   const { isAuthenticated, handleAuthenticate } = useAuth();

@@ -2,11 +2,11 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
-import { UserType } from "./sign-in";
 import { useNewLocalStorage } from "@/hooks/useLocalStorage";
 import { Button } from "./ui/button";
 import { InputField } from "./InputField";
 import { useEffect, useState } from "react";
+import { UserType } from "@/context/auth-context";
 
 const schema = z.object({
   name: z

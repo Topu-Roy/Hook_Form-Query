@@ -1,12 +1,16 @@
-export type Todo = {
-  id: number;
-  name: string;
-  description: string;
-  price: string;
-  image: string;
-};
+import { z } from "zod";
 
-export const products: Todo[] = [
+export const ProductSchema = z.object({
+  id: z.number(),
+  name: z.string().min(4),
+  description: z.string().min(8),
+  price: z.string(),
+  image: z.string().url(),
+});
+
+export type ProductType = z.infer<typeof ProductSchema>;
+
+export const products: ProductType[] = [
   {
     id: 1,
     name: "Product 1",
