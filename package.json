@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://Topu-Roy.github.io/hook-form-query",
+  "homepage": "https://Topu-Roy.github.io/Hook_Form-Query",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
