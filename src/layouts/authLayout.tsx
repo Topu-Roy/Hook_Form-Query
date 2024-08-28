@@ -2,12 +2,20 @@ import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { useAuth } from "@/hooks/useAuth";
 
-export default function Authentication() {
+export default function AuthenticationLayout() {
+  const { isAuthenticated } = useAuth();
   const navigator = useNavigate();
   useEffect(() => {
     navigator("/auth/register");
   }, []);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigator("/dashboard");
+    }
+  }, [isAuthenticated]);
 
   return (
     <div className="flex h-screen w-screen items-center justify-center">
@@ -17,7 +25,7 @@ export default function Authentication() {
             className={({ isActive }) =>
               isActive
                 ? "w-full rounded-md bg-blue-600"
-                : "bg-primary w-full rounded-md"
+                : "w-full rounded-md bg-primary"
             }
             to={"/auth/register"}
           >
@@ -29,7 +37,7 @@ export default function Authentication() {
             className={({ isActive }) =>
               isActive
                 ? "w-full rounded-md bg-blue-600"
-                : "bg-primary w-full rounded-md"
+                : "w-full rounded-md bg-primary"
             }
             to={"/auth/sign-in"}
           >
