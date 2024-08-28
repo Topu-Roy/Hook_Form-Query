@@ -12,13 +12,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   } = useNewLocalStorage<CurrentUserType>("currentUserSession");
   const { getItem: getAllUsersArray } =
     useNewLocalStorage<UserType[]>("allUsersArray");
-  const [allUsersArray, setAllUsersArray] = useState<UserType[]>([]);
   const [currentSession, setCurrentSession] = useState<CurrentUserType>();
 
   useEffect(() => {
-    const users = getAllUsersArray();
     const session = getCurrentSession();
-    if (users) setAllUsersArray(users);
     if (session) setCurrentSession(session);
   }, []);
 
@@ -35,14 +32,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const handleAuthenticate = useCallback(
     (data: Omit<UserType, "name"> | null) => {
       if (data) {
-        const userData = allUsersArray.find(
-          (user) => user.email === data.email,
-        );
-
-        console.log(userData);
+        const latestUsers = getAllUsersArray() || [];
+        const userData = latestUsers.find((user) => user.email === data.email);
 
         if (!userData) {
-          return alert("Email is not correct");
+          return alert("User not found");
         }
 
         if (data.password !== userData.password) {
@@ -53,6 +47,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           email: userData.email,
           name: userData.name,
         });
+
         setCurrentSession({
           email: userData.email,
           name: userData.name,
@@ -61,7 +56,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         return alert("No user exist yet. Register first.");
       }
     },
-    [allUsersArray, updateCurrentSession],
+    [getAllUsersArray, updateCurrentSession],
   );
 
   const logout = useCallback(() => {

@@ -12,6 +12,7 @@ import AuthenticationLayout from "./layouts/authLayout";
 import ProtectedLayout from "./layouts/protectedLayout";
 import Products from "./pages/Products";
 import ProductDetails from "./pages/ProductDetails";
+import Cart from "./pages/Cart";
 
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
       {
         path: "dashboard",
         element: <Dashboard />,
+      },
+      {
+        path: "cart",
+        element: <Cart />,
       },
       {
         path: "products",

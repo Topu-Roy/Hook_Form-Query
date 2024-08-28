@@ -7,6 +7,7 @@ import { Button } from "./ui/button";
 import { InputField } from "./InputField";
 import { useEffect, useState } from "react";
 import { UserType } from "@/context/auth-context";
+import { useAuth } from "@/hooks/useAuth";
 
 const schema = z.object({
   name: z
@@ -21,6 +22,7 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 
 export default function Register() {
+  const { handleAuthenticate } = useAuth();
   const [allUsersArray, setAllUsersArray] = useState<UserType[]>([]);
   const { getItem: getUsersArray, setItem: updateUsersArray } =
     useNewLocalStorage<UserType[]>("allUsersArray");
@@ -60,6 +62,7 @@ export default function Register() {
       alert("user already exist.");
     } else {
       updateUsersArray([...allUsersArray, newUser]);
+      handleAuthenticate({ email: data.email, password: data.password });
     }
 
     navigator("/auth/sign-in");
