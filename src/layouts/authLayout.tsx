@@ -2,14 +2,17 @@ import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useAuth } from "@/hooks/useAuth";
+import { useEffect } from "react";
 
 export default function AuthenticationLayout() {
   const { isAuthenticated } = useAuth();
   const navigator = useNavigate();
 
-  if (isAuthenticated) {
-    navigator("/dashboard", { replace: true });
-  }
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigator("/dashboard", { replace: true });
+    }
+  }, [isAuthenticated]);
 
   return (
     <div className="flex h-screen w-screen items-center justify-center">
