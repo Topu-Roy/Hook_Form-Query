@@ -10,8 +10,4 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  base: "/Hook_Form-Query/",
-  server: {
-    port: 3000,
-  },
 });
