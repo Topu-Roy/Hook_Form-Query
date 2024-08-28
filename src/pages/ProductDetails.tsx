@@ -1,10 +1,18 @@
 import { Button } from "@/components/ui/button";
+import { useAddCartProductMutation } from "@/query/cart";
 import { useSingleProductQuery } from "@/query/products";
+import { Loader2 } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
 
 export default function ProductDetails() {
+  const { mutate, isPending } = useAddCartProductMutation();
   const { id } = useParams();
   const { data: product, isLoading, error } = useSingleProductQuery(Number(id));
+
+  function addToCart() {
+    if (!product) return;
+    mutate({ ...product, quantity: 1 });
+  }
 
   if (isLoading) {
     return (
@@ -55,7 +63,9 @@ export default function ProductDetails() {
               All products
             </Button>
           </Link>
-          <Button className="w-full">Add To Cart</Button>
+          <Button onClick={addToCart} className="w-full">
+            {isPending ? <Loader2 className="animate-spin" /> : "Add To Cart"}
+          </Button>
         </div>
       </div>
     </div>

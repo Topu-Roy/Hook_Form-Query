@@ -2,17 +2,32 @@ import { ProductType } from "@/assets/products";
 import AddProductForm from "@/components/addProductForm";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { useAddCartProductMutation } from "@/query/cart";
 import { useAddProductMutation, useProductQuery } from "@/query/products";
+import { Loader2 } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
 export default function Products() {
+  const [loadingProductId, setLoadingProductId] = useState<number | null>(null);
   const [showForm, setShowForm] = useState(false);
   const { data, isLoading } = useProductQuery();
   const { mutate } = useAddProductMutation();
+  const { mutate: addToCart, isPending } = useAddCartProductMutation();
 
   function addNewProduct(product: ProductType) {
     mutate({ product });
+    setShowForm(false);
+  }
+
+  function addNewProductToCart(product: ProductType) {
+    setLoadingProductId(product.id);
+    addToCart(
+      { ...product, quantity: 1 },
+      {
+        onSettled: () => setLoadingProductId(null),
+      },
+    );
     setShowForm(false);
   }
 
@@ -40,13 +55,25 @@ export default function Products() {
                     Details
                   </Button>
                 </Link>
-                <Button className="w-full">Add To Cart</Button>
+                <Button
+                  onClick={() => addNewProductToCart(item)}
+                  className="w-full"
+                >
+                  {loadingProductId === item.id && isPending ? (
+                    <Loader2 className="animate-spin" />
+                  ) : (
+                    "Add To Cart"
+                  )}
+                </Button>
               </div>
             </Card>
           ))}
         </div>
       ) : (
-        <p>loading</p>
+        <div className="flex flex-col items-center justify-center gap-4">
+          <p className="py-16 text-lg font-medium">Loading products...</p>
+          <Loader2 className="animate-spin" />
+        </div>
       )}
     </div>
   );

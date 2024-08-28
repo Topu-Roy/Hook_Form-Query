@@ -9,10 +9,13 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { useCartProductsQuery } from "@/query/cart";
+import { cn } from "@/lib/utils";
 
 export default function ProtectedLayout() {
   const navigator = useNavigate();
   const { user, isAuthenticated, logout } = useAuth();
+  const { data } = useCartProductsQuery();
 
   useEffect(() => {
     if (!isAuthenticated) navigator("/auth/sign-in", { replace: true });
@@ -53,7 +56,20 @@ export default function ProtectedLayout() {
             </Button>
           </NavLink>
         </div>
-        <div className="inline-flex items-center justify-between gap-4">
+        <div className="inline-flex items-center justify-between gap-7">
+          <Link to={"/cart"} className="relative">
+            <Button variant={"outline"} className="rounded-full p-2">
+              <ShoppingCart />
+              <div
+                className={cn(
+                  "absolute -right-[25%] -top-[25%] flex size-6 items-center justify-center rounded-full bg-red-300",
+                  data ? (data.length < 1 ? "hidden" : "") : "",
+                )}
+              >
+                {data?.length ?? 0}
+              </div>
+            </Button>
+          </Link>
           {isAuthenticated ? (
             <Popover>
               <PopoverTrigger asChild>
@@ -67,11 +83,6 @@ export default function ProtectedLayout() {
               </PopoverContent>
             </Popover>
           ) : null}
-          <Link to={"/cart"}>
-            <Button variant={"outline"} className="rounded-full p-2">
-              <ShoppingCart />
-            </Button>
-          </Link>
           <Button onClick={logout}>Log Out</Button>
         </div>
       </div>

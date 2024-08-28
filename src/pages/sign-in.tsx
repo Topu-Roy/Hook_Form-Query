@@ -4,8 +4,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
-import { InputField } from "./InputField";
-import { Button } from "./ui/button";
+import { InputField } from "../components/InputField";
+import { Button } from "../components/ui/button";
 
 const schema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
@@ -65,7 +65,7 @@ export default function SignIn() {
           <Button
             disabled={isSubmitting || isLoading}
             variant={"outline"}
-            className="w-[50%] border border-black py-6 transition-colors hover:bg-blue-600"
+            className="w-[50%] border border-black py-6 transition-colors hover:border-0 hover:bg-blue-600 hover:text-white"
             type="submit"
           >
             Submit

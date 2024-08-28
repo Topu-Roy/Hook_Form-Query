@@ -3,8 +3,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
 import { useNewLocalStorage } from "@/hooks/useLocalStorage";
-import { Button } from "./ui/button";
-import { InputField } from "./InputField";
+import { Button } from "../components/ui/button";
+import { InputField } from "../components/InputField";
 import { useEffect, useState } from "react";
 import { UserType } from "@/context/auth-context";
 import { useAuth } from "@/hooks/useAuth";
@@ -109,7 +109,7 @@ export default function Register() {
           <Button
             disabled={isSubmitting || isLoading}
             variant={"outline"}
-            className="w-[50%] border border-black py-6 transition-colors hover:bg-blue-600"
+            className="w-[50%] border border-black py-6 transition-colors hover:border-0 hover:bg-blue-600 hover:text-white"
             type="submit"
           >
             Submit
