@@ -1,8 +1,16 @@
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function AuthenticationLayout() {
+  const { isAuthenticated } = useAuth();
+  const navigator = useNavigate();
+
+  if (isAuthenticated) {
+    navigator("/dashboard", { replace: true });
+  }
+
   return (
     <div className="flex h-screen w-screen items-center justify-center">
       <Card className="w-[90%] max-w-3xl">
