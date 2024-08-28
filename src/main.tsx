@@ -11,6 +11,7 @@ import { AuthProvider } from "@/context/auth-context-provider";
 import AuthenticationLayout from "./layouts/authLayout";
 import ProtectedLayout from "./layouts/protectedLayout";
 import Products from "./pages/Products";
+import ProductDetails from "./pages/ProductDetails";
 
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
@@ -26,7 +27,10 @@ const router = createBrowserRouter([
       {
         path: "products",
         element: <Products />,
-        errorElement: <p>Not found product</p>,
+      },
+      {
+        path: "products/:id",
+        element: <ProductDetails />,
       },
     ],
   },

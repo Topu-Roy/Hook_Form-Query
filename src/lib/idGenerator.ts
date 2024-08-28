@@ -1,5 +1,7 @@
+import { products } from "@/assets/products";
+
 function* createIdGenerator() {
-  let id = 4;
+  let id = products.length + 1;
   while (true) {
     yield id++;
   }

@@ -9,9 +9,7 @@ export default function ProtectedLayout() {
   const { isAuthenticated, logout } = useAuth();
 
   useEffect(() => {
-    !isAuthenticated
-      ? navigator("/auth/sign-in", { replace: true })
-      : navigator("/dashboard");
+    if (!isAuthenticated) navigator("/auth/sign-in", { replace: true });
   }, [isAuthenticated]);
 
   return (

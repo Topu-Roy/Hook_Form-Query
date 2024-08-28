@@ -1,9 +1,10 @@
 import { ProductType } from "@/assets/products";
-import AddProductModal from "@/components/addProductModal";
+import AddProductForm from "@/components/addProductForm";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useAddProductMutation, useProductQuery } from "@/query/products";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function Products() {
   const [showForm, setShowForm] = useState(false);
@@ -24,7 +25,7 @@ export default function Products() {
       >
         {!showForm ? "Add product" : "Close Form"}
       </Button>
-      {showForm ? <AddProductModal addNewProduct={addNewProduct} /> : null}
+      {showForm ? <AddProductForm addNewProduct={addNewProduct} /> : null}
       {!isLoading ? (
         <div className="flex flex-wrap items-start justify-between gap-2">
           {data?.map((item) => (
@@ -34,9 +35,11 @@ export default function Products() {
               <p className="text-sm text-black/80">{item.description}</p>
               <p className="text-lg font-semibold">{item.price}</p>
               <div className="flex w-full items-center justify-between gap-2 pt-2">
-                <Button variant={"outline"} className="w-full border">
-                  Details
-                </Button>
+                <Link className="w-full" to={`/products/${item.id}`}>
+                  <Button variant={"outline"} className="w-full border">
+                    Details
+                  </Button>
+                </Link>
                 <Button className="w-full">Add To Cart</Button>
               </div>
             </Card>

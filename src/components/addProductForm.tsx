@@ -24,7 +24,7 @@ type Props = {
   addNewProduct: (product: ProductType) => void;
 };
 
-export default function AddProductModal({ addNewProduct }: Props) {
+export default function AddProductForm({ addNewProduct }: Props) {
   const [showForm, setShowForm] = useState(true);
 
   const {
