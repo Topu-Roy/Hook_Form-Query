@@ -2,7 +2,7 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
-import { useNewLocalStorage } from "@/hooks/useLocalStorage";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
 import { Button } from "../components/ui/button";
 import { InputField } from "../components/InputField";
 import { useEffect, useState } from "react";
@@ -25,7 +25,7 @@ export default function Register() {
   const { handleAuthenticate } = useAuth();
   const [allUsersArray, setAllUsersArray] = useState<UserType[]>([]);
   const { getItem: getUsersArray, setItem: updateUsersArray } =
-    useNewLocalStorage<UserType[]>("allUsersArray");
+    useLocalStorage<UserType[]>("allUsersArray");
   const navigator = useNavigate();
 
   useEffect(() => {

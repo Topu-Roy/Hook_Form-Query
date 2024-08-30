@@ -1,37 +1,6 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback } from "react";
 
 export function useLocalStorage<T>(key: string) {
-  const [data, setData] = useState<T>();
-  const item = window.localStorage.getItem(key);
-
-  useEffect(() => {
-    if (item) {
-      const parsedData = JSON.parse(item) as T;
-      setData(parsedData);
-    }
-  }, [item]);
-
-  const setItem = useCallback((value: T) => {
-    if (Array.isArray(data)) {
-      const alreadyExist = data.find((item) => item === value);
-      if (alreadyExist) {
-        window.location.href = "/auth/sign-in";
-      } else {
-        window.localStorage.setItem(key, JSON.stringify(value));
-      }
-    } else {
-      window.localStorage.setItem(key, JSON.stringify(value));
-    }
-  }, []);
-
-  const removeItem = useCallback(() => {
-    window.localStorage.removeItem(key);
-  }, []);
-
-  return { data, setItem, removeItem };
-}
-
-export function useNewLocalStorage<T>(key: string) {
   const getItem = useCallback(() => {
     try {
       const item = window.localStorage.getItem(key);

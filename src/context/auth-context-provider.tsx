@@ -1,5 +1,5 @@
 import { type ReactElement, useCallback, useEffect, useState } from "react";
-import { useNewLocalStorage } from "@/hooks/useLocalStorage";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
 import {
   AuthContext,
   type CurrentUserType,
@@ -13,9 +13,9 @@ export const AuthProvider = ({ children }: { children: ReactElement }) => {
     getItem: getCurrentSession,
     removeItem: removeCurrentSession,
     setItem: updateCurrentSession,
-  } = useNewLocalStorage<CurrentUserType>("currentUserSession");
+  } = useLocalStorage<CurrentUserType>("currentUserSession");
   const { getItem: getAllUsersArray } =
-    useNewLocalStorage<UserType[]>("allUsersArray");
+    useLocalStorage<UserType[]>("allUsersArray");
   const [currentSession, setCurrentSession] = useState<CurrentUserType>();
 
   useEffect(() => {
